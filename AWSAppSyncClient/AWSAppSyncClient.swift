@@ -260,7 +260,7 @@ public protocol AWSAppSyncOfflineMutationDelegate {
 }
 
 // The client for making `Mutation`, `Query` and `Subscription` requests.
-public class AWSAppSyncClient: NetworkConnectionNotification {
+@objc public class AWSAppSyncClient: NetworkConnectionNotification, NSObject {
     
     public let apolloClient: ApolloClient?
     public var offlineMutationDelegate: AWSAppSyncOfflineMutationDelegate?
