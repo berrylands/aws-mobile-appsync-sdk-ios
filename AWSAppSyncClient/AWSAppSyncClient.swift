@@ -286,6 +286,7 @@ public protocol AWSAppSyncOfflineMutationDelegate {
     /// - Parameters:
     ///   - appSyncConfig: The `AWSAppSyncClientConfiguration` object.
     public init(appSyncConfig: AWSAppSyncClientConfiguration) throws {
+        super.init()
         self.appSyncConfiguration = appSyncConfig
         
         reachability = Reachability(hostname: self.appSyncConfiguration.url.host!)
