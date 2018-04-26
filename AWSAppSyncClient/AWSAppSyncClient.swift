@@ -286,7 +286,7 @@ public protocol AWSAppSyncOfflineMutationDelegate {
     /// - Parameters:
     ///   - appSyncConfig: The `AWSAppSyncClientConfiguration` object.
     public init(appSyncConfig: AWSAppSyncClientConfiguration) throws {
-        super.init()
+
         self.appSyncConfiguration = appSyncConfig
         
         reachability = Reachability(hostname: self.appSyncConfiguration.url.host!)
@@ -320,7 +320,7 @@ public protocol AWSAppSyncOfflineMutationDelegate {
                 // continue using in memory cache client
             }
         }
-        
+        super.init()
         self.offlineMutationExecutor = MutationExecutor(networkClient: self.httpTransport!, appSyncClient: self, snapshotProcessController: SnapshotProcessController(endpointURL:self.appSyncConfiguration.url), fileURL: self.appSyncConfiguration.databaseURL)
         networkStatusWatchers.append(self.offlineMutationExecutor!)
         
