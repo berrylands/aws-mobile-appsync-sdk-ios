@@ -194,10 +194,10 @@ class SnapshotProcessController {
                 serviceRegion: AWSRegionType,
                 userPoolsAuthProvider: AWSCognitoUserPoolsAuthProvider,
                 urlSessionConfiguration: URLSessionConfiguration = URLSessionConfiguration.default,
-                databaseURL: URL? = nil,
-                connectionStateChangeHandler: ConnectionStateChangeHandler? = nil,
-                s3ObjectManager: AWSS3ObjectManager? = nil,
-                presignedURLClient: AWSS3ObjectPresignedURLGenerator? = nil) throws {
+                databaseURL: URL,
+                connectionStateChangeHandler: ConnectionStateChangeHandler,
+                s3ObjectManager: AWSS3ObjectManager,
+                presignedURLClient: AWSS3ObjectPresignedURLGenerator) throws {
         self.url = url
         self.region = serviceRegion
         self.credentialsProvider = nil
