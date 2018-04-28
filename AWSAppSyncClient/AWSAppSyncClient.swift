@@ -285,7 +285,7 @@ public protocol AWSAppSyncOfflineMutationDelegate {
     ///
     /// - Parameters:
     ///   - appSyncConfig: The `AWSAppSyncClientConfiguration` object.
-    public init(appSyncConfig: AWSAppSyncClientConfiguration) throws {
+    @objc public init(appSyncConfig: AWSAppSyncClientConfiguration) throws {
 
         self.appSyncConfiguration = appSyncConfig
         
