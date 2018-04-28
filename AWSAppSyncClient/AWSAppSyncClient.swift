@@ -81,7 +81,7 @@ class SnapshotProcessController {
     }
 }
 
-public class AWSAppSyncClientConfiguration {
+@objc public class AWSAppSyncClientConfiguration: NSObject {
     
     fileprivate var url: URL
     fileprivate var region: AWSRegionType
@@ -98,6 +98,7 @@ public class AWSAppSyncClientConfiguration {
     fileprivate var presignedURLClient: AWSS3ObjectPresignedURLGenerator?
     fileprivate var connectionStateChangeHandler: ConnectionStateChangeHandler?
     
+    super.init()
     /// Creates a configuration object for the `AWSAppSyncClient`.
     ///
     /// - Parameters:
@@ -285,7 +286,7 @@ public protocol AWSAppSyncOfflineMutationDelegate {
     ///
     /// - Parameters:
     ///   - appSyncConfig: The `AWSAppSyncClientConfiguration` object.
-    @objc public init(appSyncConfig: AWSAppSyncClientConfiguration) throws {
+    public init(appSyncConfig: AWSAppSyncClientConfiguration) throws {
 
         self.appSyncConfiguration = appSyncConfig
         
