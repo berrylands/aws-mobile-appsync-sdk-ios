@@ -263,7 +263,7 @@ public protocol AWSAppSyncOfflineMutationDelegate {
 }
 
 // The client for making `Mutation`, `Query` and `Subscription` requests.
-@objc public class AWSAppSyncClient: NSObject, NetworkConnectionNotification {
+@objc public class AWSAppSyncClient: NetworkConnectionNotification {
     
     public let apolloClient: ApolloClient?
     public var offlineMutationDelegate: AWSAppSyncOfflineMutationDelegate?
@@ -323,7 +323,7 @@ public protocol AWSAppSyncOfflineMutationDelegate {
                 // continue using in memory cache client
             }
         }
-        super.init()
+        //super.init()
         self.offlineMutationExecutor = MutationExecutor(networkClient: self.httpTransport!, appSyncClient: self, snapshotProcessController: SnapshotProcessController(endpointURL:self.appSyncConfiguration.url), fileURL: self.appSyncConfiguration.databaseURL)
         networkStatusWatchers.append(self.offlineMutationExecutor!)
         
