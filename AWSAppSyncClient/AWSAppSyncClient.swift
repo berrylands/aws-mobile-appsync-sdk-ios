@@ -98,7 +98,6 @@ class SnapshotProcessController {
     fileprivate var presignedURLClient: AWSS3ObjectPresignedURLGenerator?
     fileprivate var connectionStateChangeHandler: ConnectionStateChangeHandler?
     
-    super.init()
     /// Creates a configuration object for the `AWSAppSyncClient`.
     ///
     /// - Parameters:
@@ -137,6 +136,7 @@ class SnapshotProcessController {
         self.snapshotController = SnapshotProcessController(endpointURL: url)
         self.s3ObjectManager = s3ObjectManager
         self.presignedURLClient = presignedURLClient
+        super.init()
     }
     
     /// Creates a configuration object for the `AWSAppSyncClient`.
@@ -176,6 +176,7 @@ class SnapshotProcessController {
         self.s3ObjectManager = s3ObjectManager
         self.presignedURLClient = presignedURLClient
         self.connectionStateChangeHandler = connectionStateChangeHandler
+        super.init()
     }
     
     /// Creates a configuration object for the `AWSAppSyncClient`.
@@ -215,6 +216,7 @@ class SnapshotProcessController {
         self.s3ObjectManager = s3ObjectManager
         self.presignedURLClient = presignedURLClient
         self.connectionStateChangeHandler = connectionStateChangeHandler
+        super.init()
     }
 }
 
