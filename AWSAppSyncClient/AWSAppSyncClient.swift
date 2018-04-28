@@ -206,7 +206,7 @@ class SnapshotProcessController {
         self.urlSessionConfiguration = urlSessionConfiguration
         self.databaseURL = databaseURL
         self.store = ApolloStore(cache: InMemoryNormalizedCache())
-        if let databaseURL = databaseURL {
+        if var databaseURL = databaseURL {
             do {
                 self.store = try ApolloStore(cache: AWSSQLLiteNormalizedCache(fileURL: databaseURL))
             } catch {
