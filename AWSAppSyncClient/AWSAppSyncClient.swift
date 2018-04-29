@@ -84,7 +84,7 @@ class SnapshotProcessController {
 @objc public class AWSAppSyncClientConfiguration: NSObject {
     
     fileprivate var url: URL
-    fileprivate var region: AWSRegionType?
+    fileprivate var region: AWSRegionType
     fileprivate var store: ApolloStore
     fileprivate var credentialsProvider: AWSCredentialsProvider?
     fileprivate var urlSessionConfiguration: URLSessionConfiguration?
@@ -99,7 +99,7 @@ class SnapshotProcessController {
     fileprivate var connectionStateChangeHandler: ConnectionStateChangeHandler?
     
         public init(url: URL
-                //serviceRegion: AWSRegionType,
+                serviceRegion: AWSRegionType
                 //userPoolsAuthProvider: AWSCognitoUserPoolsAuthProvider,
                 //urlSessionConfiguration: URLSessionConfiguration = URLSessionConfiguration.default,
                 //databaseURL: URL? = nil,
@@ -108,8 +108,8 @@ class SnapshotProcessController {
                 //presignedURLClient: AWSS3ObjectPresignedURLGenerator? = nil
                 ) throws {
         self.url = url
-        //self.region = serviceRegion
-        self.region = nil
+        self.region = serviceRegion
+        //self.region = nil
         self.credentialsProvider = nil
         self.apiKeyAuthProvider = nil
         //self.userPoolsAuthProvider = userPoolsAuthProvider
