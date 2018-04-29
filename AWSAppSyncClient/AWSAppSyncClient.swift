@@ -7,9 +7,9 @@ import Foundation
 import AWSCore
 import Reachability
 
-public enum ClientNetworkAccessState {
-    case Online
-    case Offline
+@objc public enum ClientNetworkAccessState: Int {
+    case Online = 1
+    case Offline = 0
 }
 
 @objc public protocol ConnectionStateChangeHandler {
