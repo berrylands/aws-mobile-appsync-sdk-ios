@@ -16,7 +16,7 @@ public enum MutationType: String {
     case graphQLMutationWithS3Object
 }
 
-class InternalS3ObjectDetails: AWSS3InputObjectProtocol, AWSS3ObjectProtocol {
+@objc class InternalS3ObjectDetails: NSObject, AWSS3InputObjectProtocol, AWSS3ObjectProtocol {
     
     let bucket: String
     let key: String
@@ -30,6 +30,8 @@ class InternalS3ObjectDetails: AWSS3InputObjectProtocol, AWSS3ObjectProtocol {
         self.region = region
         self.mimeType = contentType
         self.localUri = localUri
+
+        super.init()
     }
     
     func getRegion() -> String {
@@ -53,7 +55,7 @@ class InternalS3ObjectDetails: AWSS3InputObjectProtocol, AWSS3ObjectProtocol {
     }
 }
 
-public class AWSAppSyncMutationRecord {
+@objc public class AWSAppSyncMutationRecord: NSObject {
     var jsonRecord: JSONObject?
     var data: Data?
     var contentMap: GraphQLMap?
@@ -71,10 +73,12 @@ public class AWSAppSyncMutationRecord {
         self.recordIdentitifer = recordIdentifier
         self.timestamp = timestamp
         self.type = type
+
+        super.init()
     }
 }
 
-public class AWSAppSyncOfflineMutationCache {
+@objc public class AWSAppSyncOfflineMutationCache: NSObject {
     private var persistentCache: AWSMutationCache?
     var recordQueue = [String: AWSAppSyncMutationRecord]()
     var processQueue = [AWSAppSyncMutationRecord]()
@@ -84,6 +88,7 @@ public class AWSAppSyncOfflineMutationCache {
             self.persistentCache = try AWSMutationCache(fileURL: fileURL)
             try self.loadPersistedData()
         }
+        super.init()
     }
     
     internal func loadPersistedData() throws {
@@ -129,7 +134,7 @@ public class AWSAppSyncOfflineMutationCache {
     }
 }
 
-class MutationExecutor: NetworkConnectionNotification {
+@objc class MutationExecutor: NSObject, NetworkConnectionNotification {
     
     var mutationQueue = [AWSAppSyncMutationRecord]()
     let dispatchGroup = DispatchGroup()
@@ -161,6 +166,7 @@ class MutationExecutor: NetworkConnectionNotification {
         } catch {
         }
         }
+        super.init()
     }
     
     func onNetworkAvailabilityStatusChanged(isEndpointReachable: Bool) {

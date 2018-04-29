@@ -7,7 +7,7 @@ import Foundation
 import SQLite
 
 
-public protocol MutationCache {
+@objc public protocol MutationCache {
     func saveMutation(body: Data) -> Int64
     func getMutation(id: Int64) -> Data
     func loadAllMutation() -> Dictionary<Int64, Data>

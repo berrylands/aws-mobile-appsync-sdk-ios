@@ -12,7 +12,7 @@ enum AuthType {
     case oidcToken
 }
 
-public class AWSAppSyncHTTPNetworkTransport: NetworkTransport {
+@objc public class AWSAppSyncHTTPNetworkTransport: NSObject, NetworkTransport {
     let url: URL
     let session: URLSession
     let region: AWSRegionType?
@@ -43,6 +43,7 @@ public class AWSAppSyncHTTPNetworkTransport: NetworkTransport {
         self.authType = .awsIAM
         self.apiKeyAuthProvider = nil
         self.userPoolsAuthProvider = nil
+        super.init()
     }
     
     /// Creates a network transport with the specified server URL and session configuration.
@@ -65,6 +66,7 @@ public class AWSAppSyncHTTPNetworkTransport: NetworkTransport {
         self.credentialsProvider = nil
         self.endpoint = nil
         self.region = nil
+        super.init()
     }
     
     /// Creates a network transport with the specified server URL and session configuration.
@@ -87,6 +89,7 @@ public class AWSAppSyncHTTPNetworkTransport: NetworkTransport {
         self.credentialsProvider = nil
         self.endpoint = nil
         self.region = nil
+        super.init()
     }
     
     func initRequest(request: inout URLRequest) {
