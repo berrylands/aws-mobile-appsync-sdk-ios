@@ -226,7 +226,7 @@ public protocol AWSAppSyncOfflineMutationDelegate {
         } else {
             self.httpTransport = AWSAppSyncHTTPNetworkTransport(url: self.appSyncConfiguration.url,
                                                                       configuration: self.appSyncConfiguration.urlSessionConfiguration!,
-                                                                      region: self.appSyncConfiguration.region!,
+                                                                      region: self.appSyncConfiguration.region,
                                                                       credentialsProvider: self.appSyncConfiguration.credentialsProvider!)
         }
         self.apolloClient = ApolloClient(networkTransport: self.httpTransport!, store: self.appSyncConfiguration.store)
