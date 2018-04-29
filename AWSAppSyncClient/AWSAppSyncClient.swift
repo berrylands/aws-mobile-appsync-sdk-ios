@@ -7,7 +7,7 @@ import Foundation
 import AWSCore
 import Reachability
 
-@objc public enum ClientNetworkAccessState {
+public enum ClientNetworkAccessState {
     case Online
     case Offline
 }
@@ -22,7 +22,7 @@ public typealias OptimisticResponseBlock = (ApolloStore.ReadWriteTransaction?) -
 
 public typealias MutationConflictHandler<Mutation: GraphQLMutation> = (_ serverState: Snapshot?, _ taskCompletionSource: AWSTaskCompletionSource<Mutation>?, _ resultHandler: OperationResultHandler<Mutation>?) -> Void
 
-@objc enum AWSAppSyncGraphQLOperation {
+enum AWSAppSyncGraphQLOperation {
     case mutation
     case query
     case subscription
