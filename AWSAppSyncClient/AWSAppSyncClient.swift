@@ -84,10 +84,10 @@ class SnapshotProcessController {
 @objc public class AWSAppSyncClientConfiguration: NSObject {
     
     fileprivate var url: URL
-    fileprivate var region: AWSRegionType
+    fileprivate var region: AWSRegionType?
     fileprivate var store: ApolloStore
     fileprivate var credentialsProvider: AWSCredentialsProvider?
-    fileprivate var urlSessionConfiguration: URLSessionConfiguration
+    fileprivate var urlSessionConfiguration: URLSessionConfiguration?
     fileprivate var databaseURL: URL?
     fileprivate var allowsCellularAccess: Bool = true
     fileprivate var autoSubmitOfflineMutations: Bool = true
@@ -98,7 +98,42 @@ class SnapshotProcessController {
     fileprivate var presignedURLClient: AWSS3ObjectPresignedURLGenerator?
     fileprivate var connectionStateChangeHandler: ConnectionStateChangeHandler?
     
-    
+        public init(url: URL
+                //serviceRegion: AWSRegionType,
+                //userPoolsAuthProvider: AWSCognitoUserPoolsAuthProvider,
+                //urlSessionConfiguration: URLSessionConfiguration = URLSessionConfiguration.default,
+                //databaseURL: URL? = nil,
+                //connectionStateChangeHandler: ConnectionStateChangeHandler? = nil,
+                //s3ObjectManager: AWSS3ObjectManager? = nil,
+                //presignedURLClient: AWSS3ObjectPresignedURLGenerator? = nil
+                ) throws {
+        self.url = url
+        //self.region = serviceRegion
+        self.region = nil
+        self.credentialsProvider = nil
+        self.apiKeyAuthProvider = nil
+        //self.userPoolsAuthProvider = userPoolsAuthProvider
+        self.userPoolsAuthProvider = nil
+        //self.urlSessionConfiguration = urlSessionConfiguration
+        self.urlSessionConfiguration = nil
+        //self.databaseURL = databaseURL
+        self.databaseURL = nil
+        self.connectionStateChangeHandler = nil
+        self.s3ObjectManager = nil
+        self.presignedURLClient = nil
+        self.store = ApolloStore(cache: InMemoryNormalizedCache())
+        //if let databaseURL = databaseURL {
+          //  do {
+            //    self.store = try ApolloStore(cache: AWSSQLLiteNormalizedCache(fileURL: databaseURL))
+            //} catch {
+                // Use in memory cache incase database init fails
+            //}
+        //}
+        //self.s3ObjectManager = s3ObjectManager
+        //self.presignedURLClient = presignedURLClient
+        //self.connectionStateChangeHandler = connectionStateChangeHandler
+        super.init()
+    }
     /// Creates a configuration object for the `AWSAppSyncClient`.
     ///
     /// - Parameters:
