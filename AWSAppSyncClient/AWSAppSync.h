@@ -12,6 +12,7 @@ FOUNDATION_EXPORT double AWSAppSyncClientVersionNumber;
 FOUNDATION_EXPORT const unsigned char AWSAppSyncClientVersionString[];
 
 // In this header, you should import all the public headers of your framework using statements like #import <AWSAppSync/PublicHeader.h>
+@class AWSAppSyncClientConfiguration;
 
 #if __has_include("AWSAppSync/AWSAppSync-umbrella.h")
 #import "AWSAppSync/AWSAppSync-umbrella.h"

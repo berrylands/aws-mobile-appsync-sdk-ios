@@ -81,7 +81,7 @@ class SnapshotProcessController {
     }
 }
 
-@objcMembers public class AWSAppSyncClientConfiguration: {
+@objcpublic class AWSAppSyncClientConfiguration: NSObject {
     
     fileprivate var url: URL
     fileprivate var region: AWSRegionType
@@ -136,7 +136,7 @@ class SnapshotProcessController {
         self.s3ObjectManager = s3ObjectManager
         self.presignedURLClient = presignedURLClient
         self.connectionStateChangeHandler = connectionStateChangeHandler
-
+        super.init()
     }
 }
 
