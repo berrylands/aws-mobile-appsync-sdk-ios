@@ -110,7 +110,7 @@ class SnapshotProcessController {
     ///   - connectionStateChangeHandler: The delegate object to be notified when client network state changes.
     ///   - s3ObjectManager: The client used for uploading / downloading `S3Objects`.
     ///   - presignedURLClient: The `AWSAppSyncClientConfiguration` object.
-    public override init(url: URL,
+    public init(url: URL,
                 serviceRegion: AWSRegionType,
                 userPoolsAuthProvider: AWSCognitoUserPoolsAuthProvider,
                 urlSessionConfiguration: URLSessionConfiguration = URLSessionConfiguration.default,
@@ -140,7 +140,7 @@ class SnapshotProcessController {
     }
 }
 
-@objc public struct AWSAppSyncClientError: Error, LocalizedError {
+public struct AWSAppSyncClientError: Error, LocalizedError {
 
     /// The body of the response.
     public let body: Data?
@@ -157,7 +157,7 @@ class SnapshotProcessController {
     }
 }
 
-@objc public struct AWSAppSyncSubscriptionError: Error, LocalizedError {
+public struct AWSAppSyncSubscriptionError: Error, LocalizedError {
     let additionalInfo: String?
     let errorDetails: [String:String]?
     
@@ -178,7 +178,7 @@ class SnapshotProcessController {
     func onNetworkAvailabilityStatusChanged(isEndpointReachable: Bool)
 }
 
-@objc public protocol AWSAppSyncOfflineMutationDelegate {
+public protocol AWSAppSyncOfflineMutationDelegate {
     func mutationCallback(recordIdentifier: String, operationString: String, snapshot: Snapshot?, error: Error?) -> Void
 }
 
@@ -208,7 +208,7 @@ class SnapshotProcessController {
     ///
     /// - Parameters:
     ///   - appSyncConfig: The `AWSAppSyncClientConfiguration` object.
-    public override init(appSyncConfig: AWSAppSyncClientConfiguration) throws {
+    public init(appSyncConfig: AWSAppSyncClientConfiguration) throws {
 
         self.appSyncConfiguration = appSyncConfig
         
@@ -289,7 +289,7 @@ class SnapshotProcessController {
     ///   - result: The result of the fetched query, or `nil` if an error occurred.
     ///   - error: An error that indicates why the fetch failed, or `nil` if the fetch was succesful.
     /// - Returns: An object that can be used to cancel an in progress fetch.
-    @objc @discardableResult public func fetch<Query: GraphQLQuery>(query: Query, cachePolicy: CachePolicy = .returnCacheDataElseFetch, queue: DispatchQueue = DispatchQueue.main, resultHandler: OperationResultHandler<Query>? = nil) -> Cancellable {
+    @discardableResult public func fetch<Query: GraphQLQuery>(query: Query, cachePolicy: CachePolicy = .returnCacheDataElseFetch, queue: DispatchQueue = DispatchQueue.main, resultHandler: OperationResultHandler<Query>? = nil) -> Cancellable {
         return apolloClient!.fetch(query: query, cachePolicy: cachePolicy, queue: queue, resultHandler: resultHandler)
     }
     
@@ -303,12 +303,12 @@ class SnapshotProcessController {
     ///   - result: The result of the fetched query, or `nil` if an error occurred.
     ///   - error: An error that indicates why the fetch failed, or `nil` if the fetch was succesful.
     /// - Returns: A query watcher object that can be used to control the watching behavior.
-    @objc public func watch<Query: GraphQLQuery>(query: Query, cachePolicy: CachePolicy = .returnCacheDataElseFetch, queue: DispatchQueue = DispatchQueue.main, resultHandler: @escaping OperationResultHandler<Query>) -> GraphQLQueryWatcher<Query> {
+    public func watch<Query: GraphQLQuery>(query: Query, cachePolicy: CachePolicy = .returnCacheDataElseFetch, queue: DispatchQueue = DispatchQueue.main, resultHandler: @escaping OperationResultHandler<Query>) -> GraphQLQueryWatcher<Query> {
         
         return apolloClient!.watch(query: query, cachePolicy: cachePolicy, queue: queue, resultHandler: resultHandler)
     }
     
-    @objc public func subscribe<Subscription: GraphQLSubscription>(subscription: Subscription, queue: DispatchQueue = DispatchQueue.main, resultHandler: @escaping SubscriptionResultHandler<Subscription>) throws -> AWSAppSyncSubscriptionWatcher<Subscription>? {
+    public func subscribe<Subscription: GraphQLSubscription>(subscription: Subscription, queue: DispatchQueue = DispatchQueue.main, resultHandler: @escaping SubscriptionResultHandler<Subscription>) throws -> AWSAppSyncSubscriptionWatcher<Subscription>? {
         
         return AWSAppSyncSubscriptionWatcher(client: self.appSyncMQTTClient,
                                               httpClient: self.httpTransport!,
@@ -329,7 +329,7 @@ class SnapshotProcessController {
     ///   - result: The result of the performed mutation, or `nil` if an error occurred.
     ///   - error: An error that indicates why the mutation failed, or `nil` if the mutation was succesful.
     /// - Returns: An object that can be used to cancel an in progress mutation.
-    @objc @discardableResult public func perform<Mutation: GraphQLMutation>(mutation: Mutation,
+    @discardableResult public func perform<Mutation: GraphQLMutation>(mutation: Mutation,
                                                                       queue: DispatchQueue = DispatchQueue.main,
                                                                       optimisticUpdate: OptimisticResponseBlock? = nil,
                                                                       conflictResolutionBlock: MutationConflictHandler<Mutation>? = nil,
@@ -403,7 +403,7 @@ class SnapshotProcessController {
     func performMutation(dispatchGroup: DispatchGroup)
 }
 
-@objc public final class PerformMutationOperation<Mutation: GraphQLMutation>: NSObject, InMemoryMutationDelegate {
+public final class PerformMutationOperation<Mutation: GraphQLMutation>: InMemoryMutationDelegate {
     let client: ApolloClient
     let appSyncClient: AWSAppSyncClient
     let mutation: Mutation
@@ -413,7 +413,7 @@ class SnapshotProcessController {
     let mutationExecutor: MutationExecutor
     public let mutationRecord: AWSAppSyncMutationRecord
     
-    override init(offlineMutationRecord: AWSAppSyncMutationRecord, client: ApolloClient, appSyncClient: AWSAppSyncClient, offlineExecutor: MutationExecutor, mutation: Mutation, handlerQueue: DispatchQueue, mutationConflictHandler: MutationConflictHandler<Mutation>?, resultHandler: OperationResultHandler<Mutation>?) {
+    init(offlineMutationRecord: AWSAppSyncMutationRecord, client: ApolloClient, appSyncClient: AWSAppSyncClient, offlineExecutor: MutationExecutor, mutation: Mutation, handlerQueue: DispatchQueue, mutationConflictHandler: MutationConflictHandler<Mutation>?, resultHandler: OperationResultHandler<Mutation>?) {
         self.mutationRecord = offlineMutationRecord
         self.client = client
         self.appSyncClient = appSyncClient
@@ -422,7 +422,6 @@ class SnapshotProcessController {
         self.handlerQueue = handlerQueue
         self.resultHandler = resultHandler
         self.mutationConflictHandler = mutationConflictHandler
-        super.init()
         // set the deletgate callback to self
         self.mutationRecord.inmemoryExecutor = self
         mutationExecutor.queueMutation(mutation: self.mutationRecord)
