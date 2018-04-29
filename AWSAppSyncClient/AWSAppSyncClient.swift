@@ -102,7 +102,7 @@ class SnapshotProcessController {
                 serviceRegion: AWSRegionType,
                 userPoolsAuthProvider: AWSCognitoUserPoolsAuthProvider
                 //urlSessionConfiguration: URLSessionConfiguration = URLSessionConfiguration.default,
-                //databaseURL: URL? = nil,
+                databaseURL: URL? = nil
                 //connectionStateChangeHandler: ConnectionStateChangeHandler? = nil,
                 //s3ObjectManager: AWSS3ObjectManager? = nil,
                 //presignedURLClient: AWSS3ObjectPresignedURLGenerator? = nil
@@ -116,19 +116,19 @@ class SnapshotProcessController {
         //self.userPoolsAuthProvider = nil
         //self.urlSessionConfiguration = urlSessionConfiguration
         self.urlSessionConfiguration = nil
-        //self.databaseURL = databaseURL
-        self.databaseURL = nil
+        self.databaseURL = databaseURL
+        //self.databaseURL = nil
         self.connectionStateChangeHandler = nil
         self.s3ObjectManager = nil
         self.presignedURLClient = nil
         self.store = ApolloStore(cache: InMemoryNormalizedCache())
-        //if let databaseURL = databaseURL {
-          //  do {
-            //    self.store = try ApolloStore(cache: AWSSQLLiteNormalizedCache(fileURL: databaseURL))
-            //} catch {
+        if let databaseURL = databaseURL {
+            do {
+                self.store = try ApolloStore(cache: AWSSQLLiteNormalizedCache(fileURL: databaseURL))
+            } catch {
                 // Use in memory cache incase database init fails
-            //}
-        //}
+            }
+        }
         //self.s3ObjectManager = s3ObjectManager
         //self.presignedURLClient = presignedURLClient
         //self.connectionStateChangeHandler = connectionStateChangeHandler
