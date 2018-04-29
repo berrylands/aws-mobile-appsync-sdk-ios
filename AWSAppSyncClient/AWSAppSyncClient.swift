@@ -140,7 +140,7 @@ class SnapshotProcessController {
     }
 }
 
-objc public struct AWSAppSyncClientError: Error, LocalizedError {
+@objc public struct AWSAppSyncClientError: Error, LocalizedError {
 
     /// The body of the response.
     public let body: Data?
@@ -157,7 +157,7 @@ objc public struct AWSAppSyncClientError: Error, LocalizedError {
     }
 }
 
-objc public struct AWSAppSyncSubscriptionError: Error, LocalizedError {
+@objc public struct AWSAppSyncSubscriptionError: Error, LocalizedError {
     let additionalInfo: String?
     let errorDetails: [String:String]?
     
@@ -174,11 +174,11 @@ objc public struct AWSAppSyncSubscriptionError: Error, LocalizedError {
     }
 }
 
-objc protocol NetworkConnectionNotification {
+@objc protocol NetworkConnectionNotification {
     func onNetworkAvailabilityStatusChanged(isEndpointReachable: Bool)
 }
 
-objc public protocol AWSAppSyncOfflineMutationDelegate {
+@objc public protocol AWSAppSyncOfflineMutationDelegate {
     func mutationCallback(recordIdentifier: String, operationString: String, snapshot: Snapshot?, error: Error?) -> Void
 }
 
@@ -289,7 +289,7 @@ objc public protocol AWSAppSyncOfflineMutationDelegate {
     ///   - result: The result of the fetched query, or `nil` if an error occurred.
     ///   - error: An error that indicates why the fetch failed, or `nil` if the fetch was succesful.
     /// - Returns: An object that can be used to cancel an in progress fetch.
-    objc @discardableResult public func fetch<Query: GraphQLQuery>(query: Query, cachePolicy: CachePolicy = .returnCacheDataElseFetch, queue: DispatchQueue = DispatchQueue.main, resultHandler: OperationResultHandler<Query>? = nil) -> Cancellable {
+    @objc @discardableResult public func fetch<Query: GraphQLQuery>(query: Query, cachePolicy: CachePolicy = .returnCacheDataElseFetch, queue: DispatchQueue = DispatchQueue.main, resultHandler: OperationResultHandler<Query>? = nil) -> Cancellable {
         return apolloClient!.fetch(query: query, cachePolicy: cachePolicy, queue: queue, resultHandler: resultHandler)
     }
     
@@ -303,12 +303,12 @@ objc public protocol AWSAppSyncOfflineMutationDelegate {
     ///   - result: The result of the fetched query, or `nil` if an error occurred.
     ///   - error: An error that indicates why the fetch failed, or `nil` if the fetch was succesful.
     /// - Returns: A query watcher object that can be used to control the watching behavior.
-    objc public func watch<Query: GraphQLQuery>(query: Query, cachePolicy: CachePolicy = .returnCacheDataElseFetch, queue: DispatchQueue = DispatchQueue.main, resultHandler: @escaping OperationResultHandler<Query>) -> GraphQLQueryWatcher<Query> {
+    @objc public func watch<Query: GraphQLQuery>(query: Query, cachePolicy: CachePolicy = .returnCacheDataElseFetch, queue: DispatchQueue = DispatchQueue.main, resultHandler: @escaping OperationResultHandler<Query>) -> GraphQLQueryWatcher<Query> {
         
         return apolloClient!.watch(query: query, cachePolicy: cachePolicy, queue: queue, resultHandler: resultHandler)
     }
     
-    objc public func subscribe<Subscription: GraphQLSubscription>(subscription: Subscription, queue: DispatchQueue = DispatchQueue.main, resultHandler: @escaping SubscriptionResultHandler<Subscription>) throws -> AWSAppSyncSubscriptionWatcher<Subscription>? {
+    @objc public func subscribe<Subscription: GraphQLSubscription>(subscription: Subscription, queue: DispatchQueue = DispatchQueue.main, resultHandler: @escaping SubscriptionResultHandler<Subscription>) throws -> AWSAppSyncSubscriptionWatcher<Subscription>? {
         
         return AWSAppSyncSubscriptionWatcher(client: self.appSyncMQTTClient,
                                               httpClient: self.httpTransport!,
@@ -329,7 +329,7 @@ objc public protocol AWSAppSyncOfflineMutationDelegate {
     ///   - result: The result of the performed mutation, or `nil` if an error occurred.
     ///   - error: An error that indicates why the mutation failed, or `nil` if the mutation was succesful.
     /// - Returns: An object that can be used to cancel an in progress mutation.
-    objc @discardableResult public func perform<Mutation: GraphQLMutation>(mutation: Mutation,
+    @objc @discardableResult public func perform<Mutation: GraphQLMutation>(mutation: Mutation,
                                                                       queue: DispatchQueue = DispatchQueue.main,
                                                                       optimisticUpdate: OptimisticResponseBlock? = nil,
                                                                       conflictResolutionBlock: MutationConflictHandler<Mutation>? = nil,
@@ -399,11 +399,11 @@ objc public protocol AWSAppSyncOfflineMutationDelegate {
     }
 }
 
-objc protocol InMemoryMutationDelegate {
+@objc protocol InMemoryMutationDelegate {
     func performMutation(dispatchGroup: DispatchGroup)
 }
 
-objc public final class PerformMutationOperation<Mutation: GraphQLMutation>: NSObject, InMemoryMutationDelegate {
+@objc public final class PerformMutationOperation<Mutation: GraphQLMutation>: NSObject, InMemoryMutationDelegate {
     let client: ApolloClient
     let appSyncClient: AWSAppSyncClient
     let mutation: Mutation
