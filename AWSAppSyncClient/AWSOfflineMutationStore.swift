@@ -84,11 +84,12 @@ public enum MutationType: String {
     var processQueue = [AWSAppSyncMutationRecord]()
     
     init(fileURL: URL? = nil) throws {
+
+        super.init()
         if let fileURL = fileURL {
             self.persistentCache = try AWSMutationCache(fileURL: fileURL)
             try self.loadPersistedData()
         }
-        super.init()
     }
     
     internal func loadPersistedData() throws {
@@ -159,6 +160,8 @@ public enum MutationType: String {
         self.networkClient = networkClient
         self.appSyncClient = appSyncClient
         self.snapshotProcessController = snapshotProcessController
+
+        super.init()
         if let fileURL = fileURL {
         do {
             self.persistentCache = try AWSMutationCache(fileURL: fileURL)
@@ -166,7 +169,6 @@ public enum MutationType: String {
         } catch {
         }
         }
-        super.init()
     }
     
     func onNetworkAvailabilityStatusChanged(isEndpointReachable: Bool) {
