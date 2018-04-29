@@ -12,7 +12,7 @@ public enum ClientNetworkAccessState {
     case Offline
 }
 
-public protocol ConnectionStateChangeHandler {
+@objc public protocol ConnectionStateChangeHandler {
     func stateChanged(networkState: ClientNetworkAccessState)
 }
 
@@ -28,7 +28,7 @@ enum AWSAppSyncGraphQLOperation {
     case subscription
 }
 
-class SnapshotProcessController {
+@objc class SnapshotProcessController: NSObject {
     let endpointURL: URL
     var reachability: Reachability?
     private var networkStatusWatchers: [NetworkConnectionNotification] = []
@@ -39,6 +39,7 @@ class SnapshotProcessController {
         self.allowsCellularAccess = allowsCellularAccess
         reachability = Reachability(hostname: endpointURL.host!)
         reachability?.allowsCellularConnection = allowsCellularAccess
+        super.init()
         NotificationCenter.default.addObserver(self, selector: #selector(checkForReachability(note:)), name: .reachabilityChanged, object: reachability)
         do{
             try reachability?.startNotifier()
@@ -174,7 +175,7 @@ public struct AWSAppSyncSubscriptionError: Error, LocalizedError {
     func onNetworkAvailabilityStatusChanged(isEndpointReachable: Bool)
 }
 
-public protocol AWSAppSyncOfflineMutationDelegate {
+@objc public protocol AWSAppSyncOfflineMutationDelegate {
     func mutationCallback(recordIdentifier: String, operationString: String, snapshot: Snapshot?, error: Error?) -> Void
 }
 
@@ -399,7 +400,7 @@ public protocol AWSAppSyncOfflineMutationDelegate {
     func performMutation(dispatchGroup: DispatchGroup)
 }
 
-public final class PerformMutationOperation<Mutation: GraphQLMutation>: InMemoryMutationDelegate {
+@objc public final class PerformMutationOperation<Mutation: GraphQLMutation>: NSObject, InMemoryMutationDelegate {
     let client: ApolloClient
     let appSyncClient: AWSAppSyncClient
     let mutation: Mutation
@@ -419,6 +420,7 @@ public final class PerformMutationOperation<Mutation: GraphQLMutation>: InMemory
         self.resultHandler = resultHandler
         self.mutationConflictHandler = mutationConflictHandler
         // set the deletgate callback to self
+        super.init()
         self.mutationRecord.inmemoryExecutor = self
         mutationExecutor.queueMutation(mutation: self.mutationRecord)
     }
