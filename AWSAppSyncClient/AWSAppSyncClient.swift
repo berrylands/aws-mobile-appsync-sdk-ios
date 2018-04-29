@@ -81,7 +81,7 @@ class SnapshotProcessController {
     }
 }
 
-@objcpublic class AWSAppSyncClientConfiguration: NSObject {
+@objc public class AWSAppSyncClientConfiguration: NSObject {
     
     fileprivate var url: URL
     fileprivate var region: AWSRegionType
