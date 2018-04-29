@@ -104,9 +104,9 @@ enum AWSAppSyncGraphQLOperation {
                 userPoolsAuthProvider: AWSCognitoUserPoolsAuthProvider,
                 urlSessionConfiguration: URLSessionConfiguration = URLSessionConfiguration.default,
                 databaseURL: URL? = nil,
-                connectionStateChangeHandler: ConnectionStateChangeHandler? = nil,
-                s3ObjectManager: AWSS3ObjectManager? = nil,
-                presignedURLClient: AWSS3ObjectPresignedURLGenerator? = nil
+                connectionStateChangeHandler: ConnectionStateChangeHandler? = nil
+                //s3ObjectManager: AWSS3ObjectManager? = nil,
+                //presignedURLClient: AWSS3ObjectPresignedURLGenerator? = nil
                 ) throws {
         self.url = url
         self.region = serviceRegion
@@ -120,8 +120,8 @@ enum AWSAppSyncGraphQLOperation {
         self.databaseURL = databaseURL
         //self.databaseURL = nil
         //self.connectionStateChangeHandler = nil
-        //self.s3ObjectManager = nil
-        //self.presignedURLClient = nil
+        self.s3ObjectManager = nil
+        self.presignedURLClient = nil
         self.store = ApolloStore(cache: InMemoryNormalizedCache())
         if let databaseURL = databaseURL {
             do {
@@ -130,8 +130,8 @@ enum AWSAppSyncGraphQLOperation {
                 // Use in memory cache incase database init fails
             }
         }
-        self.s3ObjectManager = s3ObjectManager
-        self.presignedURLClient = presignedURLClient
+        //self.s3ObjectManager = s3ObjectManager
+        //self.presignedURLClient = presignedURLClient
         self.connectionStateChangeHandler = connectionStateChangeHandler
         super.init()
     }
@@ -400,7 +400,7 @@ public struct AWSAppSyncSubscriptionError: Error, LocalizedError {
     func performMutation(dispatchGroup: DispatchGroup)
 }
 
-@objc public final class PerformMutationOperation<Mutation: GraphQLMutation>: NSObject, InMemoryMutationDelegate {
+public final class PerformMutationOperation<Mutation: GraphQLMutation>: InMemoryMutationDelegate {
     let client: ApolloClient
     let appSyncClient: AWSAppSyncClient
     let mutation: Mutation
@@ -420,7 +420,6 @@ public struct AWSAppSyncSubscriptionError: Error, LocalizedError {
         self.resultHandler = resultHandler
         self.mutationConflictHandler = mutationConflictHandler
         // set the deletgate callback to self
-        super.init()
         self.mutationRecord.inmemoryExecutor = self
         mutationExecutor.queueMutation(mutation: self.mutationRecord)
     }
