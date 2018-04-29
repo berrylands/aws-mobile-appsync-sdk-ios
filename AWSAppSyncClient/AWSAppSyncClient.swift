@@ -134,45 +134,6 @@ class SnapshotProcessController {
         //self.connectionStateChangeHandler = connectionStateChangeHandler
         super.init()
     }
-    /// Creates a configuration object for the `AWSAppSyncClient`.
-    ///
-    /// - Parameters:
-    ///   - url: The endpoint url for Appsync endpoint.
-    ///   - serviceRegion: The service region for Appsync.
-    ///   - userPoolsAuthProvider: A `AWSCognitoUserPoolsAuthProvider` protocol object for API Key based authorization.
-    ///   - urlSessionConfiguration: A `URLSessionConfiguration` configuration object for custom HTTP configuration.
-    ///   - databaseURL: The path to local sqlite database for persistent storage, if nil, an in-memory database is used.
-    ///   - connectionStateChangeHandler: The delegate object to be notified when client network state changes.
-    ///   - s3ObjectManager: The client used for uploading / downloading `S3Objects`.
-    ///   - presignedURLClient: The `AWSAppSyncClientConfiguration` object.
-    public init(url: URL,
-                serviceRegion: AWSRegionType,
-                userPoolsAuthProvider: AWSCognitoUserPoolsAuthProvider,
-                urlSessionConfiguration: URLSessionConfiguration = URLSessionConfiguration.default,
-                databaseURL: URL? = nil,
-                connectionStateChangeHandler: ConnectionStateChangeHandler? = nil,
-                s3ObjectManager: AWSS3ObjectManager? = nil,
-                presignedURLClient: AWSS3ObjectPresignedURLGenerator? = nil) throws {
-        self.url = url
-        self.region = serviceRegion
-        self.credentialsProvider = nil
-        self.apiKeyAuthProvider = nil
-        self.userPoolsAuthProvider = userPoolsAuthProvider
-        self.urlSessionConfiguration = urlSessionConfiguration
-        self.databaseURL = databaseURL
-        self.store = ApolloStore(cache: InMemoryNormalizedCache())
-        if let databaseURL = databaseURL {
-            do {
-                self.store = try ApolloStore(cache: AWSSQLLiteNormalizedCache(fileURL: databaseURL))
-            } catch {
-                // Use in memory cache incase database init fails
-            }
-        }
-        self.s3ObjectManager = s3ObjectManager
-        self.presignedURLClient = presignedURLClient
-        self.connectionStateChangeHandler = connectionStateChangeHandler
-        super.init()
-    }
 }
 
 public struct AWSAppSyncClientError: Error, LocalizedError {
@@ -247,31 +208,31 @@ public protocol AWSAppSyncOfflineMutationDelegate {
 
         self.appSyncConfiguration = appSyncConfig
         
-        reachability = Reachability(hostname: self.appSyncConfiguration!.url!.host!)
-        self.autoSubmitOfflineMutations = self.appSyncConfiguration!.autoSubmitOfflineMutations
+        reachability = Reachability(hostname: self.appSyncConfiguration.url!.host!)
+        self.autoSubmitOfflineMutations = self.appSyncConfiguration.autoSubmitOfflineMutations
         self.store = appSyncConfig.store
-        self.appSyncMQTTClient.allowCellularAccess = self.appSyncConfiguration!.allowsCellularAccess
+        self.appSyncMQTTClient.allowCellularAccess = self.appSyncConfiguration.allowsCellularAccess
         self.presignedURLClient = appSyncConfig.presignedURLClient
         self.s3ObjectManager = appSyncConfig.s3ObjectManager
         
         if let apiKeyAuthProvider = appSyncConfig.apiKeyAuthProvider {
-            self.httpTransport = AWSAppSyncHTTPNetworkTransport(url: self.appSyncConfiguration!.url!,
+            self.httpTransport = AWSAppSyncHTTPNetworkTransport(url: self.appSyncConfiguration.url!,
                                                                       apiKeyAuthProvider: apiKeyAuthProvider,
-                                                               configuration: self.appSyncConfiguration!.urlSessionConfiguration!)
+                                                               configuration: self.appSyncConfiguration.urlSessionConfiguration!)
         } else if let userPoolsAuthProvider = appSyncConfig.userPoolsAuthProvider {
-            self.httpTransport = AWSAppSyncHTTPNetworkTransport(url: self.appSyncConfiguration!.url,
+            self.httpTransport = AWSAppSyncHTTPNetworkTransport(url: self.appSyncConfiguration.url!,
                                                                       userPoolsAuthProvider: userPoolsAuthProvider,
-                                                                      configuration: self.appSyncConfiguration!.urlSessionConfiguration!)
+                                                                      configuration: self.appSyncConfiguration.urlSessionConfiguration!)
         } else {
-            self.httpTransport = AWSAppSyncHTTPNetworkTransport(url: self.appSyncConfiguration!.url!,
-                                                                      configuration: self.appSyncConfiguration!.urlSessionConfiguration!,
+            self.httpTransport = AWSAppSyncHTTPNetworkTransport(url: self.appSyncConfiguration.url!,
+                                                                      configuration: self.appSyncConfiguration.urlSessionConfiguration!,
                                                                       region: self.appSyncConfiguration.region!,
-                                                                      credentialsProvider: self.appSyncConfiguration!.credentialsProvider!)
+                                                                      credentialsProvider: self.appSyncConfiguration.credentialsProvider!)
         }
-        self.apolloClient = ApolloClient(networkTransport: self.httpTransport!, store: self.appSyncConfiguration!.store!)
+        self.apolloClient = ApolloClient(networkTransport: self.httpTransport!, store: self.appSyncConfiguration.store!)
         
         try self.offlineMuationCacheClient = AWSAppSyncOfflineMutationCache()
-        if let fileURL = self.appSyncConfiguration!.databaseURL! {
+        if let fileURL = self.appSyncConfiguration.databaseURL! {
             do {
                 self.offlineMuationCacheClient = try AWSAppSyncOfflineMutationCache(fileURL: fileURL)
             } catch {
@@ -279,7 +240,7 @@ public protocol AWSAppSyncOfflineMutationDelegate {
             }
         }
         super.init()
-        self.offlineMutationExecutor = MutationExecutor(networkClient: self.httpTransport!, appSyncClient: self, snapshotProcessController: SnapshotProcessController(endpointURL:self.appSyncConfiguration!.url!), fileURL: self.appSyncConfiguration!.databaseURL!)
+        self.offlineMutationExecutor = MutationExecutor(networkClient: self.httpTransport!, appSyncClient: self, snapshotProcessController: SnapshotProcessController(endpointURL:self.appSyncConfiguration.url!), fileURL: self.appSyncConfiguration.databaseURL!)
         networkStatusWatchers.append(self.offlineMutationExecutor!)
         
         
@@ -302,7 +263,7 @@ public protocol AWSAppSyncOfflineMutationDelegate {
             case .wifi:
                 isReachable = true
             case .cellular:
-                if (self.appSyncConfiguration!.allowsCellularAccess) {
+                if (self.appSyncConfiguration.allowsCellularAccess) {
                     isReachable = true
                 }
             case .none:
