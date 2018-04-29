@@ -100,7 +100,7 @@ class SnapshotProcessController {
     
         public init(url: URL,
                 serviceRegion: AWSRegionType,
-                userPoolsAuthProvider: AWSCognitoUserPoolsAuthProvider
+                userPoolsAuthProvider: AWSCognitoUserPoolsAuthProvider,
                 //urlSessionConfiguration: URLSessionConfiguration = URLSessionConfiguration.default,
                 databaseURL: URL? = nil
                 //connectionStateChangeHandler: ConnectionStateChangeHandler? = nil,
