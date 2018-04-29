@@ -98,7 +98,7 @@ class SnapshotProcessController {
     fileprivate var presignedURLClient: AWSS3ObjectPresignedURLGenerator?
     fileprivate var connectionStateChangeHandler: ConnectionStateChangeHandler?
     
-        public init(url: URL
+        public init(url: URL,
                 serviceRegion: AWSRegionType
                 //userPoolsAuthProvider: AWSCognitoUserPoolsAuthProvider,
                 //urlSessionConfiguration: URLSessionConfiguration = URLSessionConfiguration.default,
