@@ -101,11 +101,11 @@ class SnapshotProcessController {
         public init(url: URL,
                 serviceRegion: AWSRegionType,
                 userPoolsAuthProvider: AWSCognitoUserPoolsAuthProvider,
-                //urlSessionConfiguration: URLSessionConfiguration = URLSessionConfiguration.default,
-                databaseURL: URL? = nil
-                //connectionStateChangeHandler: ConnectionStateChangeHandler? = nil,
-                //s3ObjectManager: AWSS3ObjectManager? = nil,
-                //presignedURLClient: AWSS3ObjectPresignedURLGenerator? = nil
+                urlSessionConfiguration: URLSessionConfiguration = URLSessionConfiguration.default,
+                databaseURL: URL? = nil,
+                connectionStateChangeHandler: ConnectionStateChangeHandler? = nil,
+                s3ObjectManager: AWSS3ObjectManager? = nil,
+                presignedURLClient: AWSS3ObjectPresignedURLGenerator? = nil
                 ) throws {
         self.url = url
         self.region = serviceRegion
@@ -114,13 +114,13 @@ class SnapshotProcessController {
         self.apiKeyAuthProvider = nil
         self.userPoolsAuthProvider = userPoolsAuthProvider
         //self.userPoolsAuthProvider = nil
-        //self.urlSessionConfiguration = urlSessionConfiguration
-        self.urlSessionConfiguration = nil
+        self.urlSessionConfiguration = urlSessionConfiguration
+        //self.urlSessionConfiguration = nil
         self.databaseURL = databaseURL
         //self.databaseURL = nil
-        self.connectionStateChangeHandler = nil
-        self.s3ObjectManager = nil
-        self.presignedURLClient = nil
+        //self.connectionStateChangeHandler = nil
+        //self.s3ObjectManager = nil
+        //self.presignedURLClient = nil
         self.store = ApolloStore(cache: InMemoryNormalizedCache())
         if let databaseURL = databaseURL {
             do {
@@ -129,9 +129,9 @@ class SnapshotProcessController {
                 // Use in memory cache incase database init fails
             }
         }
-        //self.s3ObjectManager = s3ObjectManager
-        //self.presignedURLClient = presignedURLClient
-        //self.connectionStateChangeHandler = connectionStateChangeHandler
+        self.s3ObjectManager = s3ObjectManager
+        self.presignedURLClient = presignedURLClient
+        self.connectionStateChangeHandler = connectionStateChangeHandler
         super.init()
     }
 }
