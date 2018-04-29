@@ -247,31 +247,31 @@ public protocol AWSAppSyncOfflineMutationDelegate {
 
         self.appSyncConfiguration = appSyncConfig
         
-        reachability = Reachability(hostname: self.appSyncConfiguration.url.host!)
-        self.autoSubmitOfflineMutations = self.appSyncConfiguration.autoSubmitOfflineMutations
+        reachability = Reachability(hostname: self.appSyncConfiguration.url?.host!)
+        self.autoSubmitOfflineMutations = self.appSyncConfiguration.autoSubmitOfflineMutations?
         self.store = appSyncConfig.store
-        self.appSyncMQTTClient.allowCellularAccess = self.appSyncConfiguration.allowsCellularAccess
+        self.appSyncMQTTClient.allowCellularAccess = self.appSyncConfiguration.allowsCellularAccess?
         self.presignedURLClient = appSyncConfig.presignedURLClient
         self.s3ObjectManager = appSyncConfig.s3ObjectManager
         
         if let apiKeyAuthProvider = appSyncConfig.apiKeyAuthProvider {
-            self.httpTransport = AWSAppSyncHTTPNetworkTransport(url: self.appSyncConfiguration?.url,
+            self.httpTransport = AWSAppSyncHTTPNetworkTransport(url: self.appSyncConfiguration.url!,
                                                                       apiKeyAuthProvider: apiKeyAuthProvider,
-                                                               configuration: self.appSyncConfiguration?.urlSessionConfiguration)
+                                                               configuration: self.appSyncConfiguration.urlSessionConfiguration?)
         } else if let userPoolsAuthProvider = appSyncConfig.userPoolsAuthProvider {
-            self.httpTransport = AWSAppSyncHTTPNetworkTransport(url: self.appSyncConfiguration?.url,
+            self.httpTransport = AWSAppSyncHTTPNetworkTransport(url: self.appSyncConfiguration.url!,
                                                                       userPoolsAuthProvider: userPoolsAuthProvider,
-                                                                      configuration: self.appSyncConfiguration?.urlSessionConfiguration)
+                                                                      configuration: self.appSyncConfiguration.urlSessionConfiguration?)
         } else {
-            self.httpTransport = AWSAppSyncHTTPNetworkTransport(url: self.appSyncConfiguration?.url,
-                                                                      configuration: self.appSyncConfiguration?.urlSessionConfiguration,
-                                                                      region: self.appSyncConfiguration?.region,
-                                                                      credentialsProvider: self.appSyncConfiguration?.credentialsProvider!)
+            self.httpTransport = AWSAppSyncHTTPNetworkTransport(url: self.appSyncConfiguration.url!,
+                                                                      configuration: self.appSyncConfiguration.urlSessionConfiguration?,
+                                                                      region: self.appSyncConfiguration.region!,
+                                                                      credentialsProvider: self.appSyncConfiguration.credentialsProvider!)
         }
-        self.apolloClient = ApolloClient(networkTransport: self.httpTransport!, store: self.appSyncConfiguration?.store)
+        self.apolloClient = ApolloClient(networkTransport: self.httpTransport!, store: self.appSyncConfiguration.store?)
         
         try self.offlineMuationCacheClient = AWSAppSyncOfflineMutationCache()
-        if let fileURL = self.appSyncConfiguration?.databaseURL {
+        if let fileURL = self.appSyncConfiguration.databaseURL? {
             do {
                 self.offlineMuationCacheClient = try AWSAppSyncOfflineMutationCache(fileURL: fileURL)
             } catch {
@@ -279,7 +279,7 @@ public protocol AWSAppSyncOfflineMutationDelegate {
             }
         }
         super.init()
-        self.offlineMutationExecutor = MutationExecutor(networkClient: self.httpTransport!, appSyncClient: self, snapshotProcessController: SnapshotProcessController(endpointURL:self.appSyncConfiguration?.url), fileURL: self.appSyncConfiguration?.databaseURL)
+        self.offlineMutationExecutor = MutationExecutor(networkClient: self.httpTransport!, appSyncClient: self, snapshotProcessController: SnapshotProcessController(endpointURL:self.appSyncConfiguration.url!), fileURL: self.appSyncConfiguration.databaseURL?)
         networkStatusWatchers.append(self.offlineMutationExecutor!)
         
         
@@ -302,7 +302,7 @@ public protocol AWSAppSyncOfflineMutationDelegate {
             case .wifi:
                 isReachable = true
             case .cellular:
-                if (self.appSyncConfiguration?.allowsCellularAccess) {
+                if (self.appSyncConfiguration.allowsCellularAccess?) {
                     isReachable = true
                 }
             case .none:
