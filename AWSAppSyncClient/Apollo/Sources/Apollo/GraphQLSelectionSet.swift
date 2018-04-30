@@ -18,7 +18,7 @@ public extension GraphQLSelectionSet {
   
   var jsonObject: JSONObject {
     //return snapshot.jsonObject
-    return JSONSerialization.jsonObject(with: snapshot, options: .allowFragments) as? String
+    return JSONSerialization.jsonObject(with: data!, options: .allowFragments) as? [AnyObject]
   }
 }
 
