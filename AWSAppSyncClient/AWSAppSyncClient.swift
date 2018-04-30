@@ -104,7 +104,7 @@ enum AWSAppSyncGraphQLOperation {
                 serviceRegion: AWSRegionType,
                 userPoolsAuthProvider: AWSCognitoUserPoolsAuthProvider,
                 //urlSessionConfiguration: URLSessionConfiguration = URLSessionConfiguration.default,
-                databaseURL: URL? = nil,
+                databaseURL: URL? = nil
                 //connectionStateChangeHandler: ConnectionStateChangeHandler? = nil
                 //s3ObjectManager: AWSS3ObjectManager? = nil,
                 //presignedURLClient: AWSS3ObjectPresignedURLGenerator? = nil
