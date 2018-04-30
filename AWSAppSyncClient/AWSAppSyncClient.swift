@@ -171,11 +171,11 @@ public struct AWSAppSyncSubscriptionError: Error, LocalizedError {
     }
 }
 
-@objc protocol NetworkConnectionNotification {
+protocol NetworkConnectionNotification {
     func onNetworkAvailabilityStatusChanged(isEndpointReachable: Bool)
 }
 
-@objc public protocol AWSAppSyncOfflineMutationDelegate {
+public protocol AWSAppSyncOfflineMutationDelegate {
     func mutationCallback(recordIdentifier: String, operationString: String, snapshot: Snapshot?, error: Error?) -> Void
 }
 
