@@ -99,12 +99,13 @@ enum AWSAppSyncGraphQLOperation {
     fileprivate var presignedURLClient: AWSS3ObjectPresignedURLGenerator?
     fileprivate var connectionStateChangeHandler: ConnectionStateChangeHandler?
     
-        public init(url: URL,
+        public init(
+                url: URL,
                 serviceRegion: AWSRegionType,
                 userPoolsAuthProvider: AWSCognitoUserPoolsAuthProvider,
-                urlSessionConfiguration: URLSessionConfiguration = URLSessionConfiguration.default,
+                //urlSessionConfiguration: URLSessionConfiguration = URLSessionConfiguration.default,
                 databaseURL: URL? = nil,
-                connectionStateChangeHandler: ConnectionStateChangeHandler? = nil
+                //connectionStateChangeHandler: ConnectionStateChangeHandler? = nil
                 //s3ObjectManager: AWSS3ObjectManager? = nil,
                 //presignedURLClient: AWSS3ObjectPresignedURLGenerator? = nil
                 ) throws {
@@ -115,11 +116,11 @@ enum AWSAppSyncGraphQLOperation {
         self.apiKeyAuthProvider = nil
         self.userPoolsAuthProvider = userPoolsAuthProvider
         //self.userPoolsAuthProvider = nil
-        self.urlSessionConfiguration = urlSessionConfiguration
+        self.urlSessionConfiguration = urlSessionConfiguration.default
         //self.urlSessionConfiguration = nil
         self.databaseURL = databaseURL
         //self.databaseURL = nil
-        //self.connectionStateChangeHandler = nil
+        self.connectionStateChangeHandler = nil
         self.s3ObjectManager = nil
         self.presignedURLClient = nil
         self.store = ApolloStore(cache: InMemoryNormalizedCache())
@@ -132,7 +133,7 @@ enum AWSAppSyncGraphQLOperation {
         }
         //self.s3ObjectManager = s3ObjectManager
         //self.presignedURLClient = presignedURLClient
-        self.connectionStateChangeHandler = connectionStateChangeHandler
+        //self.connectionStateChangeHandler = connectionStateChangeHandler
         super.init()
     }
 }
