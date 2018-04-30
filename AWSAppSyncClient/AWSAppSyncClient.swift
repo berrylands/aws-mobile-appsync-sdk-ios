@@ -116,7 +116,7 @@ enum AWSAppSyncGraphQLOperation {
         self.apiKeyAuthProvider = nil
         self.userPoolsAuthProvider = userPoolsAuthProvider
         //self.userPoolsAuthProvider = nil
-        self.urlSessionConfiguration = urlSessionConfiguration.default
+        self.urlSessionConfiguration = URLSessionConfiguration.default
         //self.urlSessionConfiguration = nil
         self.databaseURL = databaseURL
         //self.databaseURL = nil
