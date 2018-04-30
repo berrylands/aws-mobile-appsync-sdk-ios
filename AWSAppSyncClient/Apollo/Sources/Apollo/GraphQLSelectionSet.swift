@@ -1,10 +1,10 @@
-public typealias Snapshot = [String: Any?]
+public typealias Snapshot = Array<String>
 
 @objc public protocol GraphQLSelectionSet {
   static var selections: [GraphQLSelection] { get }
   
-  var snapshot: [String] { get }
-  init(snapshot: [String])
+  var snapshot: Array<String> { get }
+  init(snapshot: Array<String>)
 }
 
 public extension GraphQLSelectionSet {
