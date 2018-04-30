@@ -28,7 +28,7 @@ extension GraphQLSelectionSet {
   }
 }
 
-@objc public protocol GraphQLSelection {
+public protocol GraphQLSelection {
 }
 
 public struct GraphQLField: GraphQLSelection {
